@@ -13,11 +13,14 @@ const auth = require('./controllers/authorization');
 
 const db = knex({
   client: 'pg',
-  connection: {
-    host : 'http://127.0.0.1:5432',
+  connection:{
+    connectionString: process.env.DATABASE_URL,
     user : 'postgres',
     password : 'Iloveweed14!',
-    database : '10k'
+    database : '10k',
+    ssl: {
+      rejectUnauthorized: false
+    }
   }
 });
 
@@ -40,6 +43,6 @@ app.post('/imageurl', auth.requireAuth, (req, res) => { image.handleApiCall(req,
 
 
 
-app.listen(3000, ()=> {
-  console.log('app is running on port 3000');
+app.listen(process.env.PORT || 3000, ()=> {
+  console.log('app is running on port ${process.env.PORT}');
 })
